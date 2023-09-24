@@ -21,7 +21,7 @@ const giftPosition = {
     x: undefined,
     y: undefined
 };
-
+let enemyPosition = [];
 function keysBtn(event) {
     if(event.key == 'ArrowUp') moveUp();
     else if(event.key == 'ArrowLeft') moveLeft();
@@ -51,6 +51,7 @@ function startGame() {
     const map = maps[0];
     const mapRow = map.trim().split('\n');
     const mapRowCol = mapRow.map(row => row.trim().split(''));
+    enemyPosition = [];
     game.clearRect(0,0,canvaSize,canvaSize);
 
     mapRowCol.forEach((row, rowIndex) => {
@@ -65,7 +66,12 @@ function startGame() {
                 } else if(col == 'I') {
                     giftPosition.x = posX;
                     giftPosition.y = posY;
-                } 
+                } else if (col == 'X') {
+                    enemyPosition.push({
+                        x: posX,
+                        y: posY
+                    })
+                }
             }
             game.fillText(emoji, posX, posY);
         })
@@ -119,6 +125,15 @@ function movePlayer() {
     const giftCollition = giftX && giftY;
     if(giftCollition) {
         console.log("colocion");
+    }
+
+    const enemyCollition = enemyPosition.find(enemy => {
+        const enemyX = enemy.x == playerPosition.x.toFixed(3);
+        const enemyY = enemy.y == playerPosition.y.toFixed(3);
+        return enemyX && enemyY;
+    })
+    if(enemyCollition) {
+        console.log("colicion con un enemigo");
     }
     game.fillText(emojis['PLAYER'],playerPosition.x,playerPosition.y);
 }
