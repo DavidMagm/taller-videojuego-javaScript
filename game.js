@@ -33,6 +33,8 @@ function keysBtn(event) {
 
 let canvaSize;
 let elementSize;
+let level;
+let lives = 3;
 
 function setGameSize() {
     window.innerHeight > window.innerWidth 
@@ -48,7 +50,11 @@ function startGame() {
     game.font = `${elementSize}px Arial`;
     game.textAlign = "end";
 
-    const map = maps[0];
+    const map = maps[level];
+    if(!map) {
+        gameFinish();
+        return
+    }
     const mapRow = map.trim().split('\n');
     const mapRowCol = mapRow.map(row => row.trim().split(''));
     enemyPosition = [];
@@ -124,7 +130,8 @@ function movePlayer() {
     const giftY = playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3);
     const giftCollition = giftX && giftY;
     if(giftCollition) {
-        console.log("colocion");
+        console.log("subiste de nivel");
+        levelWin();
     }
 
     const enemyCollition = enemyPosition.find(enemy => {
@@ -134,6 +141,25 @@ function movePlayer() {
     })
     if(enemyCollition) {
         console.log("colicion con un enemigo");
+        levelFail();
     }
     game.fillText(emojis['PLAYER'],playerPosition.x,playerPosition.y);
+}
+
+function levelWin() {
+    level++;
+    startGame();
+}
+function levelFail() {
+    lives--;
+    if(lives <= 0) {
+        level = 0;
+        lives = 3;
+    }
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
+    startGame();
+}
+function gameFinish() {
+    console.log("terminaste el juego");
 }
