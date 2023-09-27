@@ -55,6 +55,27 @@ body {
     margin: 0;
     width: 100%;
   }
+  .inactive {
+    display: none;
+  }
+  .win-container {
+    width: 100%;
+    height: 100vh;
+  }
+  .title-win {
+    text-align: center;
+    color: #fff;
+  }
+  .win-container a {
+    display: block;
+    margin: 0 auto;
+    background-color: #fdef05; 
+    color: #fff;
+  }
+  .win-container span {
+    width: 18%;
+    height: 18%;
+  }
   
   @media (max-width: 440px) {
     button { margin-top: 25px; }

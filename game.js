@@ -1,11 +1,14 @@
 const canvas = document.querySelector('#game');
 const game = canvas.getContext('2d');
+const winContainer = document.querySelector('.win-container');
+const textRecord = document.querySelector('#text-record');
 const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
 const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
+const spanRecord = document.querySelector('#record');
 
 let canvasSize;
 let elementsSize;
@@ -13,6 +16,7 @@ let level = 0;
 let lives = 3;
 let startTime;
 let intervalTime;
+let pivotRecord;
 
 const playerPosition = {
   x: undefined,
@@ -57,6 +61,7 @@ function startGame() {
   if(!startTime) {
     startTime = Date.now()
     intervalTime = setInterval(timeShow,100);
+    timeShow();
   }
   
   const mapRows = map.trim().split('\n');
@@ -104,6 +109,10 @@ function livesShow() {
 function timeShow() {
   spanTime.innerHTML = Date.now() - startTime;
 }
+function timeShow() {
+  spanRecord.innerHTML = localStorage.getItem('record_time');
+}
+
 function movePlayer() {
   const giftCollisionX = playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
   const giftCollisionY = playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3);
@@ -153,6 +162,25 @@ function levelFail() {
 function gameWin() {
   console.log('¡Terminaste el juego!');
   clearInterval(intervalTime);
+  recordTime();
+
+  setTimeout(showContainerWin,1000);
+}
+function recordTime() {
+  const playerTime = Date.now() - startTime;
+  recordTime = localStorage.getItem('record_time');
+  if(!recordTime || record > playerTime) {
+    localStorage.setItem('record_time',playerTime);
+    pivotRecord = true;
+  }
+}
+function showContainerWin() {
+  winContainer.classList.remove('inactive');
+  if(pivotRecord) {
+    textRecord.textContent = "Lograste un nuevo record"
+  } else{
+    textRecord.textContent = "No puediste lograr un nuevo record";
+  }
 }
 
 window.addEventListener('keydown', moveByKeys);
@@ -207,3 +235,4 @@ function moveDown() {
     startGame();
   }
 }
+
