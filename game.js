@@ -33,7 +33,7 @@ window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
 function fixNumber(n) {
-  Number(n.toFixed(0));
+  return Number(n.toFixed(0));
 }
 function setCanvasSize() {
   if (window.innerHeight > window.innerWidth) {
