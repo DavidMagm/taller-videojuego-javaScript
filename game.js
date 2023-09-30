@@ -1,6 +1,7 @@
 const canvas = document.querySelector('#game');
 const game = canvas.getContext('2d');
 const winContainer = document.querySelector('.win-container');
+const gameContainer = document.querySelector('.game-container');
 const textRecord = document.querySelector('#text-record');
 const btnUp = document.querySelector('#up');
 const btnLeft = document.querySelector('#left');
@@ -33,15 +34,17 @@ window.addEventListener('resize', setCanvasSize);
 
 function setCanvasSize() {
   if (window.innerHeight > window.innerWidth) {
-    canvasSize = window.innerWidth * 0.8;
+    canvasSize = window.innerWidth * 0.7;
   } else {
-    canvasSize = window.innerHeight * 0.8;
+    canvasSize = window.innerHeight * 0.7;
   }
-  
+  canvasSize = Number(canvasSize.toFixed(0));
   canvas.setAttribute('width', canvasSize);
   canvas.setAttribute('height', canvasSize);
   
   elementsSize = (canvasSize / 10);
+  playerPosition.x = undefined;
+  playerPosition.y = undefined;
 
   startGame();
 }
@@ -49,7 +52,7 @@ function setCanvasSize() {
 function startGame() {
   console.log({ canvasSize, elementsSize });
 
-  game.font = elementsSize + 'em Verdana';
+  game.font = elementsSize + 'px Verdana';
   game.textAlign = 'end';
 
   const map = maps[level];
@@ -63,7 +66,7 @@ function startGame() {
     intervalTime = setInterval(timeShow,100);
     timeShow();
   }
-  
+  recordShow();
   const mapRows = map.trim().split('\n');
   const mapRowCols = mapRows.map(row => row.trim().split(''));
   
@@ -71,6 +74,7 @@ function startGame() {
   enemyPositions = [];
   game.clearRect(0,0,canvasSize, canvasSize);
   livesShow();
+  
   mapRowCols.forEach((row, rowI) => {
     row.forEach((col, colI) => {
       const emoji = emojis[col];
@@ -109,7 +113,7 @@ function livesShow() {
 function timeShow() {
   spanTime.innerHTML = Date.now() - startTime;
 }
-function timeShow() {
+function recordShow() {
   spanRecord.innerHTML = localStorage.getItem('record_time');
 }
 
@@ -176,6 +180,7 @@ function recordTime() {
 }
 function showContainerWin() {
   winContainer.classList.remove('inactive');
+  gameContainer.classList.add('inactive');
   if(pivotRecord) {
     textRecord.textContent = "Lograste un nuevo record"
   } else{
