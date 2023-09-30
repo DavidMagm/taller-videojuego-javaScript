@@ -173,7 +173,7 @@ function gameWin() {
 function recordTime() {
   const playerTime = Date.now() - startTime;
   recordTime = localStorage.getItem('record_time');
-  if(!recordTime || record > playerTime) {
+  if(!recordTime || recordTime > playerTime) {
     localStorage.setItem('record_time',playerTime);
     pivotRecord = true;
   }
