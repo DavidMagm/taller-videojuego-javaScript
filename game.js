@@ -32,6 +32,9 @@ let enemyPositions = [];
 window.addEventListener('load', setCanvasSize);
 window.addEventListener('resize', setCanvasSize);
 
+function fixNumber(n) {
+  Number(n.toFixed(0));
+}
 function setCanvasSize() {
   if (window.innerHeight > window.innerWidth) {
     canvasSize = window.innerWidth * 0.7;
@@ -104,7 +107,8 @@ function startGame() {
 
   movePlayer();
 }
-
+fixNumber(playerPosition.x);
+fixNumber(playerPosition.y);
 function livesShow() {
   const heartLives = Array(lives).fill(emojis['HEART']);
   spanLives.innerHTML = "";
@@ -128,7 +132,7 @@ function movePlayer() {
 
   const enemyCollision = enemyPositions.find(enemy => {
     const enemyCollisionX = enemy.x.toFixed(3) == playerPosition.x.toFixed(3);
-    const enemyCollisionY = enemy.y.toFixed(3) == playerPosition.y.toFixed(3);
+    const enemyCollisionY = enemy.y.toFixed(0) == playerPosition.y.toFixed(0);
     return enemyCollisionX && enemyCollisionY;
   });
   
